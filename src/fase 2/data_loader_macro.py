@@ -14,7 +14,7 @@ RISK_PATH.mkdir(parents=True, exist_ok=True)
 
 # Fechas globales
 START_DATE = "1990-01-01"
-END_DATE = "2025-10-24"
+END_DATE = "2025-10-31"
 
 # =========================
 # 1️⃣ Variables macro principales

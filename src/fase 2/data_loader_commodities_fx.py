@@ -40,7 +40,7 @@ FX_PAIRS = {
 
 # Fechas de descarga
 START_DATE = "1990-01-01"
-END_DATE = "2025-10-24"
+END_DATE = "2025-10-31"
 
 def download_and_save(ticker_name, ticker_symbol, folder_path):
     """
