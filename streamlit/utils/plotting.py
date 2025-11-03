@@ -10,7 +10,6 @@ def plot_interactive_series(df_val, df_future, view_option="Completa"):
     df_future: DataFrame con columnas ['date','pred']
     view_option: 'Completa', 'Mensual', 'Semanal'
     """
-    # Copiar datos
     df_plot = df_val.copy()
 
     # Agregar predicciones futuras
@@ -54,16 +53,18 @@ def plot_interactive_series(df_val, df_future, view_option="Completa"):
         hovertemplate='Fecha: %{x}<br>Predicción: %{y:.2f}€<extra></extra>'
     ))
 
-    # Configuración de scroll y zoom
+    # Configuración de scroll horizontal
     fig.update_xaxes(
-        rangeslider_visible=True,
-        fixedrange=False  # permite mover horizontal
+        rangeslider_visible=False,  # quitamos mini-gráfico
+        fixedrange=False,           # permite mover horizontal
+        showline=True,
+        mirror=True
     )
 
     # Limitar scroll vertical
     y_min = np.nanmin([df_plot['y_real'].min(), df_plot['y_pred'].min()])
     y_max = np.nanmax([df_plot['y_real'].max(), df_plot['y_pred'].max()])
-    fig.update_yaxes(range=[y_min*0.95, y_max*1.05], fixedrange=True)
+    fig.update_yaxes(range=[y_min*0.95, y_max*1.05], fixedrange=True, showline=True, mirror=True)
 
     # Layout general
     fig.update_layout(
@@ -74,7 +75,7 @@ def plot_interactive_series(df_val, df_future, view_option="Completa"):
         hovermode="x unified",
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         height=500,
-        margin=dict(l=20, r=20, t=30, b=20)
+        margin=dict(l=20, r=20, t=30, b=40),  # más espacio abajo para la barra
     )
 
     return fig
