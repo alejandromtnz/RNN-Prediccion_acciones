@@ -37,21 +37,22 @@ def plot_interactive_series(df_val, df_future, view_option="Completa"):
         hovertemplate='Fecha: %{x}<br>Predicción: %{y:.2f}€<extra></extra>'
     ))
 
-    # Determinar ventana inicial según view_option
+    # Ventana inicial según view_option
     last_day = df_plot['date'].max()
     if view_option == "Mensual":
         first_day = last_day - pd.Timedelta(days=30)
     elif view_option == "Semanal":
         first_day = last_day - pd.Timedelta(days=7)
-    else:  # Completa
+    else:
         first_day = df_plot['date'].min()
 
-    # Configuración del eje x con rangeslider
+    # Configuración eje x: solo desplazamiento
     fig.update_xaxes(
-        range=[first_day, last_day],      # ventana inicial
+        range=[first_day, last_day],
+        fixedrange=True,  # no permite zoom ni arrastrar el eje x
         rangeslider=dict(
             visible=True,
-            thickness=0.02,
+            thickness=0.03,   # anchura del slider
             bgcolor='#f0f0f0',
             borderwidth=0
         ),
@@ -64,7 +65,7 @@ def plot_interactive_series(df_val, df_future, view_option="Completa"):
     y_max = np.nanmax([df_plot['y_real'].max(), df_plot['y_pred'].max()])
     fig.update_yaxes(range=[y_min*0.95, y_max*1.05], fixedrange=True, showline=True, mirror=True)
 
-    # Layout general
+    # Layout general: desactivar zoom/pan fuera del rangeslider
     fig.update_layout(
         template='plotly_white',
         title="Predicción vs Real",
@@ -74,6 +75,7 @@ def plot_interactive_series(df_val, df_future, view_option="Completa"):
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         height=500,
         margin=dict(l=20, r=20, t=30, b=40),
+        dragmode=False  # desactiva cualquier zoom/pan sobre el gráfico
     )
 
     return fig
