@@ -29,10 +29,10 @@ if page == "Inicio":
     # ==============================
     # Cargar datos y modelo
     # ==============================
-    data_scaled, dates_all_1 = load_data("../../data/processed/final_data.csv.gz")
+    data_scaled, dates_all_1 = load_data("../data/processed/final_data.csv.gz")
     model, scaler = load_model_and_scaler(
-        "../../results/models/lstm_256_128_drop0.3_0.2_bs32_final.keras",
-        "../../results/models/scaler_lstm_256_128.pkl"
+        "../results/models/lstm_256_128_drop0.3_0.2_bs32_final.keras",
+        "../results/models/scaler_lstm_256_128.pkl"
     )
 
     # ==============================
