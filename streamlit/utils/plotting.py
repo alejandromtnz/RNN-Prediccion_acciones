@@ -10,6 +10,7 @@ def plot_interactive_series(df_val, df_future, view_option="Completa"):
     df_future: DataFrame con columnas ['date','pred']
     view_option: 'Completa', 'Mensual', 'Semanal'
     """
+    # Copiar datos
     df_plot = df_val.copy()
 
     # Agregar predicciones futuras
@@ -18,15 +19,15 @@ def plot_interactive_series(df_val, df_future, view_option="Completa"):
     df_future_['y_real'] = np.nan
     df_plot = pd.concat([df_plot, df_future_], ignore_index=True)
 
-    # Filtrar según opción de vista
+    # Filtrar rango según view_option
     if view_option == "Mensual":
-        df_plot['month'] = df_plot['date'].dt.to_period('M')
-        df_plot = df_plot.groupby('month').mean(numeric_only=True).reset_index()
-        df_plot['date'] = df_plot['month'].dt.to_timestamp()
+        last_day = df_plot['date'].max()
+        first_day = last_day - pd.Timedelta(days=30)
+        df_plot = df_plot[df_plot['date'] >= first_day]
     elif view_option == "Semanal":
-        df_plot['week'] = df_plot['date'].dt.to_period('W')
-        df_plot = df_plot.groupby('week').mean(numeric_only=True).reset_index()
-        df_plot['date'] = df_plot['week'].dt.start_time
+        last_day = df_plot['date'].max()
+        first_day = last_day - pd.Timedelta(days=7)
+        df_plot = df_plot[df_plot['date'] >= first_day]
 
     # Crear figura
     fig = go.Figure()
@@ -53,13 +54,27 @@ def plot_interactive_series(df_val, df_future, view_option="Completa"):
         hovertemplate='Fecha: %{x}<br>Predicción: %{y:.2f}€<extra></extra>'
     ))
 
+    # Configuración de scroll y zoom
+    fig.update_xaxes(
+        rangeslider_visible=True,
+        fixedrange=False  # permite mover horizontal
+    )
+
+    # Limitar scroll vertical
+    y_min = np.nanmin([df_plot['y_real'].min(), df_plot['y_pred'].min()])
+    y_max = np.nanmax([df_plot['y_real'].max(), df_plot['y_pred'].max()])
+    fig.update_yaxes(range=[y_min*0.95, y_max*1.05], fixedrange=True)
+
+    # Layout general
     fig.update_layout(
         template='plotly_white',
         title="Predicción vs Real",
         xaxis_title="Fecha",
         yaxis_title="Valor (€)",
         hovermode="x unified",
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        height=500,
+        margin=dict(l=20, r=20, t=30, b=20)
     )
 
     return fig
