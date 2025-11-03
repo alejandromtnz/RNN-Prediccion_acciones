@@ -4,12 +4,6 @@ import pandas as pd
 import numpy as np
 
 def plot_interactive_series(df_val, df_future, view_option="Completa"):
-    """
-    Devuelve gráfico interactivo con Plotly.
-    df_val: DataFrame con columnas ['date','y_real','y_pred']
-    df_future: DataFrame con columnas ['date','pred']
-    view_option: 'Completa', 'Mensual', 'Semanal'
-    """
     df_plot = df_val.copy()
 
     # Agregar predicciones futuras
@@ -17,16 +11,6 @@ def plot_interactive_series(df_val, df_future, view_option="Completa"):
     df_future_ = df_future_.rename(columns={'pred':'y_pred'})
     df_future_['y_real'] = np.nan
     df_plot = pd.concat([df_plot, df_future_], ignore_index=True)
-
-    # Filtrar rango según view_option
-    if view_option == "Mensual":
-        last_day = df_plot['date'].max()
-        first_day = last_day - pd.Timedelta(days=30)
-        df_plot = df_plot[df_plot['date'] >= first_day]
-    elif view_option == "Semanal":
-        last_day = df_plot['date'].max()
-        first_day = last_day - pd.Timedelta(days=7)
-        df_plot = df_plot[df_plot['date'] >= first_day]
 
     # Crear figura
     fig = go.Figure()
@@ -53,10 +37,24 @@ def plot_interactive_series(df_val, df_future, view_option="Completa"):
         hovertemplate='Fecha: %{x}<br>Predicción: %{y:.2f}€<extra></extra>'
     ))
 
-    # Configuración de scroll horizontal
+    # Determinar ventana inicial según view_option
+    last_day = df_plot['date'].max()
+    if view_option == "Mensual":
+        first_day = last_day - pd.Timedelta(days=30)
+    elif view_option == "Semanal":
+        first_day = last_day - pd.Timedelta(days=7)
+    else:  # Completa
+        first_day = df_plot['date'].min()
+
+    # Configuración del eje x con rangeslider
     fig.update_xaxes(
-        rangeslider_visible=False,  # quitamos mini-gráfico
-        fixedrange=False,           # permite mover horizontal
+        range=[first_day, last_day],      # ventana inicial
+        rangeslider=dict(
+            visible=True,
+            thickness=0.02,
+            bgcolor='#f0f0f0',
+            borderwidth=0
+        ),
         showline=True,
         mirror=True
     )
@@ -75,7 +73,7 @@ def plot_interactive_series(df_val, df_future, view_option="Completa"):
         hovermode="x unified",
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         height=500,
-        margin=dict(l=20, r=20, t=30, b=40),  # más espacio abajo para la barra
+        margin=dict(l=20, r=20, t=30, b=40),
     )
 
     return fig
