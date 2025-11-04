@@ -50,9 +50,9 @@ def plot_interactive_series(df_val, df_future, view_option="Completa"):
     # Ventana inicial según vista
     last_day = df_plot['date'].max()
     if view_option == "Mensual":
-        first_day = last_day - pd.Timedelta(days=30)
+        first_day = last_day - pd.Timedelta(days=365)
     elif view_option == "Semanal":
-        first_day = last_day - pd.Timedelta(days=7)
+        first_day = last_day - pd.Timedelta(days=30)
     else:
         first_day = df_plot['date'].min()
 
