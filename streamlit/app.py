@@ -58,11 +58,29 @@ div.stButton > button:hover {
     background-color: #d0d0d0;
 }
 
-/* Selectbox y radio: estilo base */
-div[data-baseweb="select"], div[data-baseweb="radio"] {
-    font-family: inherit !important;
-    font-weight: 400 !important;
+/* ===== Selectbox BBVA/Santander: mantener dorado ===== */
+div[data-baseweb="select"] > div {
+    border: 2px solid transparent !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease;
+}
+div[data-baseweb="select"]:hover > div {
+    border-color: #b8860b !important;
+    box-shadow: 0 0 10px rgba(184, 134, 11, 0.6);
+}
+div[data-baseweb="select"] > div:focus-within {
+    border-color: #b8860b !important;
+    box-shadow: 0 0 12px rgba(184, 134, 11, 0.8);
+    background-color: #fffdf3;
+}
+div[data-baseweb="select"] span {
+    font-weight: 600 !important;
     color: #111 !important;
+}
+
+/* ===== Radio buttons (si quieres dorado también) ===== */
+div[data-baseweb="radio"] label {
+    color: #222;
 }
 </style>
 """, unsafe_allow_html=True)
