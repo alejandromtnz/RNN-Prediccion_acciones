@@ -22,8 +22,8 @@ def plot_interactive_series(df_val, df_future, view_option="Completa"):
     fig = go.Figure()
 
     # Decide si mostrar markers según el tamaño
-    mode_real = 'lines+markers' if len(df_plot) < 2000 else 'lines'
-    mode_pred = 'lines+markers' if len(df_plot) < 2000 else 'lines'
+    mode_real = 'lines' if len(df_plot) > 2000 else 'lines+markers'
+    mode_pred = 'lines' if len(df_plot) > 2000 else 'lines+markers'
 
     # Serie real
     fig.add_trace(go.Scatter(
@@ -31,9 +31,9 @@ def plot_interactive_series(df_val, df_future, view_option="Completa"):
         y=df_plot['y_real'],
         mode=mode_real,
         name='Real',
-        line=dict(color='blue'),
+        line=dict(color='#002b5c', width=2.5),  # azul oscuro corporativo
         marker=dict(size=4),
-        hovertemplate='Fecha: %{x}<br>Real: %{y:.2f}€<extra></extra>'
+        hovertemplate='<b>Fecha:</b> %{x}<br><b>Real:</b> %{y:.2f}€<extra></extra>'
     ))
 
     # Serie de predicción
@@ -42,16 +42,16 @@ def plot_interactive_series(df_val, df_future, view_option="Completa"):
         y=df_plot['y_pred'],
         mode=mode_pred,
         name='Predicción',
-        line=dict(color='red', dash='dash'),
+        line=dict(color='#b8860b', dash='dash', width=2.2),  # dorado sobrio
         marker=dict(size=4),
-        hovertemplate='Fecha: %{x}<br>Predicción: %{y:.2f}€<extra></extra>'
+        hovertemplate='<b>Fecha:</b> %{x}<br><b>Predicción:</b> %{y:.2f}€<extra></extra>'
     ))
 
     # Ventana inicial según vista
     last_day = df_plot['date'].max()
-    if view_option == "Mensual":
+    if view_option == "Último año":
         first_day = last_day - pd.Timedelta(days=365)
-    elif view_option == "Semanal":
+    elif view_option == "Último mes":
         first_day = last_day - pd.Timedelta(days=30)
     else:
         first_day = df_plot['date'].min()
@@ -66,21 +66,15 @@ def plot_interactive_series(df_val, df_future, view_option="Completa"):
         fixedrange=True,
         rangeslider=dict(
             visible=True,
-            thickness=0.04,
-            bgcolor='#f0f0f0',
+            thickness=0.045,
+            bgcolor='#f4f4f4',
             borderwidth=0,
         ),
         showline=True,
-        mirror=True
-    )
-
-    # Bloqueo visual del rango del slider (solo desplazamiento)
-    fig.update_layout(
-        xaxis_rangeslider_thickness=0.05,
-        xaxis_rangeslider_bgcolor="#f4f4f4",
-        xaxis_rangeslider_borderwidth=0,
-        xaxis_rangeslider_range=[total_min, total_max],  # rango fijo del slider
-        uirevision=True  # ⚡ evita que se redibuje entero al actualizar
+        mirror=True,
+        linecolor="#ccc",
+        tickfont=dict(family="Lato", size=12, color="#333"),
+        title_font=dict(family="Cinzel", size=14, color="#111")
     )
 
     # Limitar desplazamiento vertical
@@ -90,26 +84,35 @@ def plot_interactive_series(df_val, df_future, view_option="Completa"):
         range=[y_min * 0.95, y_max * 1.05],
         fixedrange=True,
         showline=True,
-        mirror=True
+        mirror=True,
+        linecolor="#ccc",
+        tickfont=dict(family="Lato", size=12, color="#333"),
+        title_font=dict(family="Cinzel", size=14, color="#111")
     )
 
-    # Layout general
+    # Layout general (estilo premium)
     fig.update_layout(
         template='plotly_white',
-        title="Predicción vs Real",
-        xaxis_title="Fecha",
-        yaxis_title="Valor (€)",
+        title=dict(
+            text="Predicción vs Real",
+            font=dict(family="Cinzel", size=20, color="#111", weight="bold"),
+            x=0.4,
+            y=0.95
+        ),
         hovermode="x unified",
         legend=dict(
             orientation="h",
             yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1
+            y=1.05,
+            xanchor="center",
+            x=0.94,
+            font=dict(family="Lato", size=13, color="#222")
         ),
         height=500,
-        margin=dict(l=20, r=20, t=30, b=40),
-        dragmode=False
+        margin=dict(l=30, r=30, t=60, b=40),
+        dragmode=False,
+        plot_bgcolor="#ffffff",
+        paper_bgcolor="#ffffff"
     )
 
     return fig
