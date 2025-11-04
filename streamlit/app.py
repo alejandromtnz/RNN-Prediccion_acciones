@@ -9,9 +9,87 @@ from utils.plotting import plot_interactive_series
 
 st.set_page_config(
     page_title="RNN Stock Predictor",
-    page_icon="📈",
+    page_icon="",
     layout="wide"
 )
+
+# ==============================
+# 🎨 Estilo corporativo premium
+# ==============================
+st.markdown("""
+    <style>
+    /* Importar fuentes */
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Lato:wght@300;400;500&display=swap');
+
+    /* Fondo general */
+    html, body, [class*="css"]  {
+        background-color: #f8f8f9;
+        color: #1c1c1c;
+        font-family: 'Lato', sans-serif;
+        font-weight: 400;
+        line-height: 1.6;
+    }
+
+    /* Títulos principales */
+    h1, h2, h3 {
+        font-family: 'Cinzel', serif;
+        font-weight: 600;
+        letter-spacing: 0.7px;
+        text-transform: uppercase;
+        color: #111;
+        margin-bottom: 0.75rem;
+    }
+
+    /* Texto de párrafos y contenido */
+    p, li, label, .stMarkdown, .stRadio, .stSelectbox, .stButton, .stSidebar {
+        font-family: 'Lato', sans-serif;
+        color: #333;
+        font-size: 15px;
+    }
+
+    /* Sidebar refinado */
+    section[data-testid="stSidebar"] {
+        background-color: #f3f3f3;
+        border-right: 1px solid #ddd;
+        padding-top: 1.5rem;
+    }
+
+    /* Botones */
+    div.stButton > button {
+        background-color: #1a1a1a;
+        color: white;
+        font-family: 'Cinzel', serif;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-radius: 6px;
+        border: none;
+        transition: 0.3s ease all;
+    }
+    div.stButton > button:hover {
+        background-color: #3c3c3c;
+        color: #f5f5f5;
+    }
+
+    /* Contenedor de radio/select */
+    div[data-baseweb="radio"] label {
+        color: #222;
+    }
+
+    /* Estilo de títulos del sidebar */
+    section[data-testid="stSidebar"] h2, section[data-testid="stSidebar"] h3 {
+        font-family: 'Cinzel', serif;
+        color: #111;
+        text-transform: uppercase;
+        font-size: 1.1rem;
+    }
+
+    /* Eliminar contornos azules feos */
+    *:focus {
+        outline: none !important;
+        box-shadow: none !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 # ==============================
 # Sidebar: Navegación
@@ -39,8 +117,8 @@ def inverse_scaled(scaled_values, scaler, total_features):
 # Página: Inicio
 # ==============================
 if page == "Inicio":
-    st.title("📈 Predicción de BBVA y Santander")
-    st.markdown("Visualiza la predicción histórica y a 5 días usando nuestra RNN entrenada.")
+    st.title("Proyección bursátil")
+    st.markdown("Explora el rendimiento histórico y las proyecciones a 5 días generadas por nuestro modelo RNN.")
 
     # ==============================
     # Fijar semilla para reproducibilidad
@@ -105,9 +183,9 @@ if page == "Inicio":
     future_preds_inv = inverse_scaled(np.array(future_preds_scaled), scaler, data_scaled.shape[1])
 
     # ==============================
-    # DataFrame final por banco
+    # DataFrame final por entidad
     # ==============================
-    bank = st.selectbox("Selecciona banco:", ["BBVA", "Santander"])
+    bank = st.selectbox("Selecciona entidad::", ["BBVA", "Santander"])
     bank_idx = 0 if bank=="BBVA" else 1
 
     df_val = pd.DataFrame({
@@ -123,7 +201,7 @@ if page == "Inicio":
     # ==============================
     # Opciones de visualización
     # ==============================
-    view_option = st.radio("Ver serie:", ["Completa", "Mensual", "Semanal"])
+    view_option = st.radio("Rango de visualización:", ["Completa", "Último año", "Último mes"], horizontal=True)
     fig = plot_interactive_series(df_val, df_future, view_option)
     st.plotly_chart(fig, use_container_width=True)
 
@@ -131,23 +209,23 @@ if page == "Inicio":
 # Página: Sobre mi
 # ==============================
 elif page == "Sobre mi":
-    st.title("Sobre mi")
+    st.title("Perfil profesional")
     st.markdown("""
-    Soy Alejandro Martínez Ronda, estudiante de Ingeniería Matemática con experiencia en análisis de datos y modelos predictivos.
+    Alejandro Martínez Ronda, experimentado en análisis de datos y modelos predictivos.
     
-    - [GitHub](https://github.com/tu_usuario)
-    - Contacto: tu.email@example.com
+    - [GitHub](https://github.com/alejandromtnz)
+    - Contacto: amartron@myuax.com
     """)
 
 # ==============================
 # Página: Sobre el modelo
 # ==============================
 elif page == "Sobre el modelo":
-    st.title("Sobre el modelo")
+    st.title("Modelo predictivo")
     st.markdown("""
     - Modelo: LSTM con 2 capas (256 y 128 unidades) y dropout (0.3, 0.2)
     - Escalado: StandardScaler
     - Datos: Precios de BBVA y Santander + componentes PCA
     - Horizonte de predicción: 5 días
-    - Repositorio del modelo: [GitHub](https://github.com/tu_usuario/tu_repositorio)
+    - Repositorio del modelo: [GitHub](https://github.com/alejandromtnz/RNN-Prediccion_acciones)
     """)
