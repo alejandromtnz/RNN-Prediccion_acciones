@@ -91,6 +91,69 @@ st.markdown("""
         outline: none !important;
         box-shadow: none !important;
     }
+                /* === Efecto dorado en el selectbox (BBVA / Santander) === */
+    div[data-baseweb="select"] > div {
+        border: 2px solid transparent !important;
+        border-radius: 8px !important;
+        transition: all 0.3s ease;
+    }
+
+    /* Al pasar el ratón por encima */
+    div[data-baseweb="select"]:hover > div {
+        border-color: #b8860b !important;
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+    }
+
+    /* Cuando está activo (clicado o seleccionado) */
+    div[data-baseweb="select"] > div:focus-within {
+        border-color: #b8860b !important;
+        box-shadow: 0 0 12px rgba(255, 215, 0, 0.8);
+        background-color: #fffdf3;
+    }
+
+    /* Texto del elemento seleccionado */
+    div[data-baseweb="select"] span {
+        font-weight: 600 !important;
+        color: #111 !important;
+    }
+            /* === Unificar tipografías globales === */
+
+    /* Fuente de texto general */
+    html, body, [class*="css"], p, li, label, div, span, input, select, button {
+        font-family: 'Lato', sans-serif !important;
+        font-weight: 400;
+        color: #1c1c1c;
+    }
+
+    /* Títulos y encabezados */
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Cinzel', serif !important;
+        font-weight: 600 !important;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #111;
+    }
+
+    /* Radio buttons, selectboxes, botones, etc. */
+    div[data-baseweb="select"], div[data-baseweb="radio"], div.stButton > button {
+        font-family: 'Cinzel', serif !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+        color: #111;
+    }
+
+    /* Ajustar el color del borde cuando se pasa el cursor (usa tu dorado sobrio) */
+    div[data-baseweb="select"]:hover > div {
+        border-color: #b8860b !important;
+        box-shadow: 0 0 10px rgba(184, 134, 11, 0.6);
+    }
+
+    div[data-baseweb="select"] > div:focus-within {
+        border-color: #b8860b !important;
+        box-shadow: 0 0 12px rgba(184, 134, 11, 0.8);
+        background-color: #fffdf3;
+    }
     </style>
 """, unsafe_allow_html=True)
 
