@@ -20,142 +20,53 @@ st.set_page_config(
 # 🎨 Estilo corporativo premium global
 # ==============================
 st.markdown("""
-    <style>
-    /* Importar fuentes */
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Lato:wght@300;400;500&display=swap');
+<style>
+/* Mantener títulos Cinzel */
+h1, h2, h3 {
+    font-family: 'Cinzel', serif !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: #111;
+}
 
-    /* Fondo general */
-    html, body, [class*="css"]  {
-        background-color: #f8f8f9;
-        color: #1c1c1c;
-        font-family: 'Lato', sans-serif;
-        font-weight: 400;
-        line-height: 1.6;
-    }
+/* Texto general y elementos de Streamlit: fuente predeterminada */
+p, li, label, div.stMarkdown, div.stTextInput, div.stSelectbox, div.stButton {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
+    font-weight: 400;
+    color: #111;
+    line-height: 1.6;
+}
 
-    /* Títulos principales */
-    h1, h2, h3 {
-        font-family: 'Cinzel', serif;
-        font-weight: 600;
-        letter-spacing: 0.7px;
-        text-transform: uppercase;
-        color: #111;
-        margin-bottom: 0.75rem;
-    }
+/* Sidebar: estilo predeterminado */
+section[data-testid="stSidebar"] {
+    background-color: #f0f2f6;
+    padding-top: 1rem;
+}
 
-    /* Texto de párrafos y contenido */
-    p, li, label, .stMarkdown, .stRadio, .stSelectbox, .stButton, .stSidebar {
-        font-family: 'Lato', sans-serif;
-        color: #333;
-        font-size: 15px;
-    }
+/* Botones: estilo predeterminado */
+div.stButton > button {
+    font-family: inherit !important;
+    font-weight: 500;
+    color: inherit;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    border: none;
+    transition: 0.3s ease all;
+}
+div.stButton > button:hover {
+    background-color: #d0d0d0;
+}
 
-    /* Sidebar refinado */
-    section[data-testid="stSidebar"] {
-        background-color: #f3f3f3;
-        border-right: 1px solid #ddd;
-        padding-top: 1.5rem;
-    }
-
-    /* Botones */
-    div.stButton > button {
-        background-color: #1a1a1a;
-        color: white;
-        font-family: 'Cinzel', serif;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        border-radius: 6px;
-        border: none;
-        transition: 0.3s ease all;
-    }
-    div.stButton > button:hover {
-        background-color: #3c3c3c;
-        color: #f5f5f5;
-    }
-
-    /* Contenedor de radio/select */
-    div[data-baseweb="radio"] label {
-        color: #222;
-    }
-
-    /* Estilo de títulos del sidebar */
-    section[data-testid="stSidebar"] h2, section[data-testid="stSidebar"] h3 {
-        font-family: 'Cinzel', serif;
-        color: #111;
-        text-transform: uppercase;
-        font-size: 1.1rem;
-    }
-
-    /* Eliminar contornos azules feos */
-    *:focus {
-        outline: none !important;
-        box-shadow: none !important;
-    }
-                /* === Efecto dorado en el selectbox (BBVA / Santander) === */
-    div[data-baseweb="select"] > div {
-        border: 2px solid transparent !important;
-        border-radius: 8px !important;
-        transition: all 0.3s ease;
-    }
-
-    /* Al pasar el ratón por encima */
-    div[data-baseweb="select"]:hover > div {
-        border-color: #b8860b !important;
-        box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
-    }
-
-    /* Cuando está activo (clicado o seleccionado) */
-    div[data-baseweb="select"] > div:focus-within {
-        border-color: #b8860b !important;
-        box-shadow: 0 0 12px rgba(255, 215, 0, 0.8);
-        background-color: #fffdf3;
-    }
-
-    /* Texto del elemento seleccionado */
-    div[data-baseweb="select"] span {
-        font-weight: 600 !important;
-        color: #111 !important;
-    }
-            /* === Unificar tipografías globales === */
-
-    /* Fuente de texto general */
-    html, body, [class*="css"], p, li, label, div, span, input, select, button {
-        font-family: 'Lato', sans-serif !important;
-        font-weight: 400;
-        color: #1c1c1c;
-    }
-
-    /* Títulos y encabezados */
-    h1, h2, h3, h4, h5, h6 {
-        font-family: 'Cinzel', serif !important;
-        font-weight: 600 !important;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: #111;
-    }
-
-    /* Radio buttons, selectboxes, botones, etc. */
-    div[data-baseweb="select"], div[data-baseweb="radio"], div.stButton > button {
-        font-family: 'Cinzel', serif !important;
-        font-weight: 600 !important;
-        letter-spacing: 0.3px;
-        text-transform: uppercase;
-        color: #111;
-    }
-
-    /* Ajustar el color del borde cuando se pasa el cursor (usa tu dorado sobrio) */
-    div[data-baseweb="select"]:hover > div {
-        border-color: #b8860b !important;
-        box-shadow: 0 0 10px rgba(184, 134, 11, 0.6);
-    }
-
-    div[data-baseweb="select"] > div:focus-within {
-        border-color: #b8860b !important;
-        box-shadow: 0 0 12px rgba(184, 134, 11, 0.8);
-        background-color: #fffdf3;
-    }
-    </style>
+/* Selectbox y radio: estilo base */
+div[data-baseweb="select"], div[data-baseweb="radio"] {
+    font-family: inherit !important;
+    font-weight: 400 !important;
+    color: #111 !important;
+}
+</style>
 """, unsafe_allow_html=True)
+
 
 # ==============================
 # Sidebar: Navegación
