@@ -12,7 +12,7 @@ from utils.plotting import plot_interactive_series
 # ==============================
 st.set_page_config(
     page_title="RNN Stock Predictor",
-    page_icon="",
+    page_icon="📈",
     layout="wide"
 )
 
@@ -21,75 +21,81 @@ st.set_page_config(
 # ==============================
 st.markdown("""
     <style>
-    /* Importar fuentes */
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Lato:wght@300;400;500&display=swap');
+    /* =======================
+       🎨 Selectbox y Radio refinados
+       ======================= */
 
-    /* Fondo general */
-    html, body, [class*="css"]  {
-        background-color: #f8f8f9;
-        color: #1c1c1c;
-        font-family: 'Lato', sans-serif;
-        font-weight: 400;
-        line-height: 1.6;
+    /* Selectbox */
+    div[data-baseweb="select"] > div {
+        border: 1px solid #ccc !important;
+        border-radius: 6px !important;
+        background-color: #ffffff !important;
+        transition: 0.2s ease all;
+        padding: 2px 6px !important;
+    }
+    div[data-baseweb="select"]:hover > div {
+        border-color: #b8860b !important;
+        box-shadow: 0 0 5px rgba(184,134,11,0.25);
     }
 
-    /* Títulos principales */
-    h1, h2, h3 {
-        font-family: 'Cinzel', serif;
+    label[data-baseweb="select"] {
+        font-family: 'Cinzel', serif !important;
+        color: #111 !important;
         font-weight: 600;
-        letter-spacing: 0.7px;
-        text-transform: uppercase;
-        color: #111;
-        margin-bottom: 0.75rem;
+        font-size: 15px !important;
+        margin-bottom: 0.1rem !important;
     }
 
-    /* Texto de párrafos y contenido */
-    p, li, label, .stMarkdown, .stRadio, .stSelectbox, .stButton, .stSidebar {
-        font-family: 'Lato', sans-serif;
-        color: #333;
-        font-size: 15px;
+    /* Radios horizontales sin círculos rojos */
+    div[data-baseweb="radio"] {
+        display: flex !important;
+        gap: 1.2rem !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        margin-top: 0.3rem !important;
+        margin-bottom: 0.8rem !important;
     }
 
-    /* Sidebar refinado */
-    section[data-testid="stSidebar"] {
-        background-color: #f3f3f3;
-        border-right: 1px solid #ddd;
-        padding-top: 1.5rem;
-    }
-
-    /* Botones */
-    div.stButton > button {
-        background-color: #1a1a1a;
-        color: white;
-        font-family: 'Cinzel', serif;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        border-radius: 6px;
-        border: none;
-        transition: 0.3s ease all;
-    }
-    div.stButton > button:hover {
-        background-color: #3c3c3c;
-        color: #f5f5f5;
-    }
-
-    /* Contenedor de radio/select */
     div[data-baseweb="radio"] label {
+        position: relative;
+        padding-left: 20px;
+        cursor: pointer;
+        font-family: 'Lato', sans-serif;
+        font-size: 14px;
         color: #222;
+        transition: color 0.2s ease;
     }
 
-    /* Estilo de títulos del sidebar */
-    section[data-testid="stSidebar"] h2, section[data-testid="stSidebar"] h3 {
-        font-family: 'Cinzel', serif;
-        color: #111;
-        text-transform: uppercase;
-        font-size: 1.1rem;
+    div[data-baseweb="radio"] input[type="radio"] {
+        appearance: none;
+        position: absolute;
+        left: 0;
+        top: 2px;
+        width: 11px;
+        height: 11px;
+        border: 2px solid #002b5c;
+        border-radius: 50%;
+        background-color: #fff;
+        transition: all 0.2s ease;
     }
 
-    /* Eliminar contornos azules feos */
-    *:focus {
-        outline: none !important;
-        box-shadow: none !important;
+    div[data-baseweb="radio"] input[type="radio"]:checked {
+        border-color: #b8860b;
+        background: radial-gradient(circle, #b8860b 45%, transparent 46%);
+    }
+
+    div[data-baseweb="radio"] label:hover input[type="radio"] {
+        border-color: #b8860b;
+    }
+
+    .stSelectbox, .stRadio {
+        margin-top: 0.3rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    /* Ajuste general de espaciado */
+    .block-container {
+        padding-top: 1.2rem !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -108,7 +114,7 @@ with st.sidebar:
 # ==============================
 # Funciones auxiliares
 # ==============================
-def create_sequences(data, target_cols=['BBVA.MC_Close','SAN.MC_Close'], lookback=5, horizon=1):
+def create_sequences(data, target_cols=['BBVA.MC_Close', 'SAN.MC_Close'], lookback=5, horizon=1):
     X, y = [], []
     for i in range(lookback, len(data) - horizon + 1):
         X_seq = data.iloc[i - lookback:i].values
@@ -118,7 +124,10 @@ def create_sequences(data, target_cols=['BBVA.MC_Close','SAN.MC_Close'], lookbac
     return np.array(X), np.array(y)
 
 def inverse_scaled(scaled_values, scaler, total_features):
-    padded = np.hstack([scaled_values, np.zeros((scaled_values.shape[0], total_features - scaled_values.shape[1]))])
+    padded = np.hstack([
+        scaled_values,
+        np.zeros((scaled_values.shape[0], total_features - scaled_values.shape[1]))
+    ])
     return scaler.inverse_transform(padded)[:, :scaled_values.shape[1]]
 
 # ==============================
@@ -126,7 +135,7 @@ def inverse_scaled(scaled_values, scaler, total_features):
 # ==============================
 if page == "Inicio":
     st.title("Proyección bursátil")
-    st.markdown("Explora el rendimiento histórico y las proyecciones a 5 días generadas por nuestro modelo RNN.")
+    st.markdown("Visualiza el rendimiento histórico y las proyecciones a 5 días generadas por el modelo RNN.")
 
     SEED = 42
     np.random.seed(SEED)
@@ -139,11 +148,15 @@ if page == "Inicio":
     data = data.loc["2005-01-01":"2025-10-31"]
 
     pca_cols = [col for col in data.columns if "PCA" in col]
-    main_cols = ['BBVA.MC_Close','SAN.MC_Close'] + pca_cols
+    main_cols = ['BBVA.MC_Close', 'SAN.MC_Close'] + pca_cols
     data_rnn = data[main_cols].ffill().bfill()
 
     scaler = joblib.load("../results/models/scaler_lstm_256_128.pkl")
-    data_scaled = pd.DataFrame(scaler.transform(data_rnn), columns=data_rnn.columns, index=data_rnn.index)
+    data_scaled = pd.DataFrame(
+        scaler.transform(data_rnn),
+        columns=data_rnn.columns,
+        index=data_rnn.index
+    )
 
     model = load_model("../results/models/lstm_256_128_drop0.3_0.2_bs32_final.keras", compile=False)
 
@@ -156,7 +169,8 @@ if page == "Inicio":
     y_pred_inv = inverse_scaled(y_pred_scaled, scaler, data_scaled.shape[1])
     y_real_inv = inverse_scaled(y_seq_reshaped, scaler, data_scaled.shape[1])
 
-    n_future = 5
+    # Predicción futura
+    n_future = 3
     last_X = X_seq[-1:].copy()
     future_preds_scaled = []
     for _ in range(n_future):
@@ -164,11 +178,12 @@ if page == "Inicio":
         future_preds_scaled.append(pred_scaled[0])
         new_step = last_X[:, -1, :].copy()
         new_step[0, 0:2] = pred_scaled
-        last_X = np.concatenate([last_X[:, 1:, :], new_step.reshape(1,1,-1)], axis=1)
+        last_X = np.concatenate([last_X[:, 1:, :], new_step.reshape(1, 1, -1)], axis=1)
     future_preds_inv = inverse_scaled(np.array(future_preds_scaled), scaler, data_scaled.shape[1])
 
+    # Selector de entidad
     bank = st.selectbox("Selecciona entidad:", ["BBVA", "Santander"])
-    bank_idx = 0 if bank=="BBVA" else 1
+    bank_idx = 0 if bank == "BBVA" else 1
 
     df_val = pd.DataFrame({
         "date": dates_all_1,
@@ -180,7 +195,14 @@ if page == "Inicio":
     future_dates = pd.bdate_range(start=last_date + pd.Timedelta(days=1), periods=n_future)
     df_future = pd.DataFrame({"date": future_dates, "pred": future_preds_inv[:, bank_idx]})
 
-    view_option = st.radio("Rango de visualización:", ["Completa", "Último año", "Último mes"], horizontal=True)
+    # Selector de rango
+    view_option = st.radio(
+        "Rango de visualización:",
+        ["Completa", "Último año", "Último mes"],
+        horizontal=True
+    )
+
+    # Gráfico
     fig = plot_interactive_series(df_val, df_future, view_option)
     st.plotly_chart(fig, use_container_width=True)
 
@@ -190,7 +212,8 @@ if page == "Inicio":
 elif page == "Perfil profesional":
     st.title("Perfil profesional")
     st.markdown("""
-    **Alejandro Martínez Ronda**, analista especializado en modelado predictivo y análisis de datos financieros.  
+    **Alejandro Martínez Ronda**  
+    Analista especializado en modelado predictivo y análisis de datos financieros.  
     Experiencia en aprendizaje automático, visualización avanzada y desarrollo de modelos económicos.
     
     **Contacto:**  
