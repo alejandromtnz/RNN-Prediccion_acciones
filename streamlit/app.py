@@ -93,7 +93,7 @@ with st.sidebar:
     st.markdown("<h2 style='margin-bottom: 0.5rem;'>Menú</h2>", unsafe_allow_html=True)
     page = st.radio(
         label="",
-        options=["Inicio", "Perfil profesional", "Modelo predictivo"],
+        options=["Inicio", "Modelo predictivo", "Perfil profesional"],
         label_visibility="collapsed"
     )
 
