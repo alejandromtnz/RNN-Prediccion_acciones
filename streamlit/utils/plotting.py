@@ -120,7 +120,7 @@ def plot_interactive_series(df_val, df_future, view_option="Completa"):
         title=dict(
             text="Predicción vs Real",
             font=dict(family="Cinzel", size=20, color="#111", weight="bold"),
-            x=0.4,
+            x=0.44,
             y=0.95
         ),
         hovermode="x unified",
@@ -129,7 +129,7 @@ def plot_interactive_series(df_val, df_future, view_option="Completa"):
             yanchor="bottom",
             y=1.05,
             xanchor="center",
-            x=0.94,
+            x=0.88,
             font=dict(family="Lato", size=13, color="#222")
         ),
         height=500,

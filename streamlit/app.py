@@ -182,6 +182,7 @@ if page == "Inicio":
             text-align: right;
             margin-top: -5px;
             margin-bottom: 5px;
+            margin-right: 25px;
         ">
             <i>*Precios ajustados por dividendos y “splits”.*</i>
         </div>
