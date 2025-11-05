@@ -175,6 +175,17 @@ if page == "Inicio":
     view_option = st.radio("Rango de visualización:", ["Completa", "Último año", "Último mes"], horizontal=True)
     fig = plot_interactive_series(df_val, df_future, view_option)
     st.plotly_chart(fig, use_container_width=True)
+    st.markdown("""
+        <div style="
+            font-size: 13px;
+            color: #555;
+            text-align: right;
+            margin-top: -5px;
+            margin-bottom: 5px;
+        ">
+            <i>*Precios ajustados por dividendos y “splits”.*</i>
+        </div>
+        """, unsafe_allow_html=True)
 
 # ==============================
 # Página: Perfil profesional
@@ -253,12 +264,6 @@ elif page == "Perfil profesional":
     )
 
 
-
-
-
-# ==============================
-# Página: Modelo predictivo
-# ==============================
 # ==============================
 # Página: Modelo predictivo
 # ==============================
@@ -271,7 +276,6 @@ elif page == "Modelo predictivo":
     Se recopilan más de **300 series históricas** de diversas fuentes:
 
     - **Acciones e índices bursátiles** (Yahoo Finance): BBVA, Santander, IBEX 35, S&P 500, Euro Stoxx 50, DAX, Nasdaq, MSCI World.  
-        - Tener en cuenta que se han utilizado los precios de los dividendos reinvertidos (Close) para reflejar el rendimiento total.
     - **Commodities y divisas:** Brent, Oro, Gas Natural, Cobre, EUR/USD, DXY.  
     - **Indicadores macroeconómicos:** PIB, inflación, desempleo, tipos de interés (FRED, BCE, Eurostat).  
     - **Riesgos de mercado:** volatilidad implícita (VIX, EVZ) y sectores globales (MSCI Financials).  
@@ -279,6 +283,22 @@ elif page == "Modelo predictivo":
 
     Cada fuente se almacena con trazabilidad completa bajo una jerarquía versionada (`data/raw/`), lista para actualizaciones y análisis reproducibles.
     """)
+
+    st.markdown("""
+    <div style="
+        background-color: #f9f9f9;
+        border-left: 4px solid #b8860b;
+        padding: 10px 15px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-size: 15px;
+        line-height: 1.4;
+        text-align: justify;
+    ">
+    <b>NOTA:</b> Los precios de las acciones se emplean en su versión <i>ajustada por dividendos</i> y <i>“splits”</i>, lo que garantiza la coherencia temporal del valor total para el accionista. Por ello, los precios históricos pueden parecer menores (por ejemplo, BBVA en 2005 ≈ 4 € frente a los 13 € nominales originales), ya que se corrigen los efectos de dividendos —pagos que reducen el precio sin reflejar una pérdida real— y divisiones de acciones. 
+    Este ajuste permite entrenar el modelo sobre una serie continua y económicamente comparable en el tiempo, eliminando distorsiones provocadas por eventos corporativos que no representan cambios reales en el valor de mercado. De este modo, las variaciones de precio reflejan únicamente la evolución del valor económico de la compañía y no saltos artificiales por ajustes contables, lo que mejora la estabilidad de la serie, la capacidad predictiva de la RNN y la interpretación financiera de los resultados.
+    </div>
+    """, unsafe_allow_html=True)
 
     st.markdown("""
     ### Limpieza, integración y reducción dimensional
