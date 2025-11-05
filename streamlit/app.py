@@ -90,10 +90,10 @@ div[data-baseweb="radio"] label {
 # Sidebar: Navegación
 # ==============================
 with st.sidebar:
-    st.markdown("<h2 style='margin-bottom: 0.5rem;'>Menú</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='margin-top: 43px; margin-bottom: 0.5rem;'>Menú</h2>", unsafe_allow_html=True)
     page = st.radio(
         label="",
-        options=["Inicio", "Modelo predictivo", "Perfil profesional"],
+        options=["Proyección bursátil", "Modelo predictivo", "Perfil profesional"],
         label_visibility="collapsed"
     )
 
@@ -116,7 +116,7 @@ def inverse_scaled(scaled_values, scaler, total_features):
 # ==============================
 # Página: Inicio
 # ==============================
-if page == "Inicio":
+if page == "Proyección bursátil":
     st.title("Proyección bursátil")
     st.markdown("Explora el rendimiento histórico y las proyecciones de acciones a 5 días.")
 
