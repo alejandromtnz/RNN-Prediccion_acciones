@@ -118,7 +118,7 @@ def inverse_scaled(scaled_values, scaler, total_features):
 # ==============================
 if page == "Inicio":
     st.title("Proyección bursátil")
-    st.markdown("Explora el rendimiento histórico y las proyecciones a 5 días generadas por nuestro modelo RNN.")
+    st.markdown("Explora el rendimiento histórico y las proyecciones de acciones a 5 días.")
 
     SEED = 42
     np.random.seed(SEED)
@@ -181,14 +181,75 @@ if page == "Inicio":
 # ==============================
 elif page == "Perfil profesional":
     st.title("Perfil profesional")
-    st.markdown("""
-    **Alejandro Martínez Ronda**, analista especializado en modelado predictivo y análisis de datos financieros.  
-    Experiencia en aprendizaje automático, visualización avanzada y desarrollo de modelos económicos.
-    
-    **Contacto:**  
-    - [GitHub](https://github.com/alejandromtnz)  
-    - amartron@myuax.com
-    """)
+
+    st.markdown(
+        """
+        <style>
+        .business-card {
+            background-color: #fdfcf9; /* blanco marfil más claro */
+            border: 1px solid #dcdcdc;
+            border-radius: 14px;
+            padding: 2.5rem 3rem;
+            box-shadow: 0 3px 14px rgba(0,0,0,0.08);
+            max-width: 900px;
+            margin: 2.5rem auto;
+            font-size: 1.1rem;
+            line-height: 1.75;
+        }
+        .business-card h2 {
+            font-family: 'Cinzel', serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #111;
+            margin-bottom: 1rem;
+        }
+        .business-card h3 {
+            margin-top: 2rem;
+            font-family: 'Cinzel', serif;
+            font-size: 1.05rem;
+            color: #222;
+            letter-spacing: 0.5px;
+        }
+        .business-card a {
+            color: #b8860b;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .business-card a:hover {
+            text-decoration: underline;
+        }
+        .business-card ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 0.5rem;
+        }
+        .business-card li {
+            margin-bottom: 0.3rem;
+        }
+        </style>
+
+        <div class="business-card">
+            <h2>Alejandro Martínez Ronda</h2>
+            <p>
+            Analista versátil especializado en <b>modelado predictivo</b>, <b>análisis de datos</b> y <b>aprendizaje automático</b>, en este caso, para el desarrollo de <b>modelos económicos con series temporales</b>.<br><br>
+            Combinando una sólida formación en <b>Ingeniería Matemática e Informática</b>, soluciones que integran rigurosidad técnica con visión económica.
+            <h3>Contacto:</h3>
+            <ul>
+                <li><a href="https://github.com/alejandromtnz" target="_blank">GitHub</a></li>
+                <li><a href="https://www.linkedin.com/in/alejandromartinezronda/" target="_blank">LinkedIn</a></li>
+                <li><a href="mailto:amartron@myuax.com">Correo electrónico</a></li>
+            </ul>
+            </p>
+
+            
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+
+
 
 # ==============================
 # Página: Modelo predictivo
