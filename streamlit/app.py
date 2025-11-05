@@ -266,7 +266,7 @@ elif page == "Modelo predictivo":
     st.title("Modelo predictivo")
 
     st.markdown("""
-    ### 1. Recopilación y estructuración de datos
+    ### Recopilación y estructuración de datos
     El modelo parte de una infraestructura de descarga y almacenamiento automatizada que consolida información económica y financiera desde **1990** hasta la actualidad.  
     Se recopilan más de **300 series históricas** de diversas fuentes:
 
@@ -280,7 +280,7 @@ elif page == "Modelo predictivo":
     """)
 
     st.markdown("""
-    ### 2. Limpieza, integración y reducción dimensional
+    ### Limpieza, integración y reducción dimensional
     Los más de **44 000 registros y 306 variables** pasan por un proceso exhaustivo de depuración:
 
     - Homogeneización temporal a frecuencia **diaria**.  
@@ -292,7 +292,7 @@ elif page == "Modelo predictivo":
     """)
 
     st.markdown("""
-    ### 3. Estructura de entrada para la red neuronal
+    ### Estructura de entrada para la red neuronal
     El modelo utiliza una **ventana temporal de 5 días (lookback)** que captura dependencias a corto plazo.  
     Se aplican dos configuraciones paralelas:
 
@@ -309,7 +309,7 @@ elif page == "Modelo predictivo":
     """)
 
     st.markdown("""
-    ### 4. Arquitectura del modelo LSTM
+    ### Arquitectura del modelo LSTM
     El núcleo del sistema es una **red neuronal recurrente (RNN)** con celdas **LSTM (Long Short-Term Memory)**, diseñadas para reconocer patrones temporales en datos financieros.
 
     **Estructura:**
@@ -329,7 +329,7 @@ elif page == "Modelo predictivo":
     """)
 
     st.markdown("""
-    ### 5. Predicción y proyección futura
+    ### Predicción y proyección futura
     El modelo genera dos salidas principales:
 
     - **Predicción validada:** comparación entre valores reales y estimados en el histórico reciente.  
@@ -339,7 +339,7 @@ elif page == "Modelo predictivo":
     """)
 
     st.markdown("""
-    ### 6. Visualización interactiva
+    ### Visualización interactiva
     El panel permite explorar:
     - La evolución histórica de precios y predicciones.  
     - Rangos de visualización: *Completa*, *Último año* o *Último mes*.  
@@ -348,7 +348,7 @@ elif page == "Modelo predictivo":
     """)
 
     st.markdown("""
-    ### 7. Resumen técnico
+    ### Resumen técnico
     | Fase | Descripción | Resultado clave |
     |------|--------------|----------------|
     | **Ingesta** | Descarga automática desde Yahoo Finance, FRED y BCE | 306 series originales |
