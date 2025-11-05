@@ -193,15 +193,104 @@ elif page == "Perfil profesional":
 # ==============================
 # Página: Modelo predictivo
 # ==============================
+# ==============================
+# Página: Modelo predictivo
+# ==============================
 elif page == "Modelo predictivo":
     st.title("Modelo predictivo")
-    st.markdown("""
-    **Arquitectura del modelo**  
-    - Red neuronal recurrente tipo **LSTM** con 2 capas (256 y 128 unidades).  
-    - Regularización mediante *dropout* (0.3, 0.2).  
-    - Escalado: *StandardScaler*.  
-    - Variables: precios de cierre de **BBVA** y **Santander**, más componentes **PCA**.  
-    - Horizonte de predicción: **5 días**.  
 
-    [Repositorio del modelo en GitHub](https://github.com/alejandromtnz/RNN-Prediccion_acciones)
+    st.markdown("""
+    ### 1. Recopilación y estructuración de datos
+    El modelo parte de una infraestructura de descarga y almacenamiento automatizada que consolida información económica y financiera desde **1990** hasta la actualidad.  
+    Se recopilan más de **300 series históricas** de diversas fuentes:
+
+    - **Acciones e índices bursátiles** (Yahoo Finance): BBVA, Santander, IBEX 35, S&P 500, Euro Stoxx 50, DAX, Nasdaq, MSCI World.  
+    - **Commodities y divisas:** Brent, Oro, Gas Natural, Cobre, EUR/USD, DXY.  
+    - **Indicadores macroeconómicos:** PIB, inflación, desempleo, tipos de interés (FRED, BCE, Eurostat).  
+    - **Riesgos de mercado:** volatilidad implícita (VIX, EVZ) y sectores globales (MSCI Financials).  
+    - **Eventos históricos:** crisis, conflictos y shocks financieros desde 1990 clasificados por impacto (1 a 3).
+
+    Cada fuente se almacena con trazabilidad completa bajo una jerarquía versionada (`data/raw/`), lista para actualizaciones y análisis reproducibles.
+    """)
+
+    st.markdown("""
+    ### 2. Limpieza, integración y reducción dimensional
+    Los más de **44 000 registros y 306 variables** pasan por un proceso exhaustivo de depuración:
+
+    - Homogeneización temporal a frecuencia **diaria**.  
+    - Normalización y unificación de índices.  
+    - Integración de eventos con puntuaciones de impacto económico y geopolítico.
+
+    Posteriormente se calcula la correlación con los precios de **BBVA** y **Santander**, conservando las series más informativas.  
+    Tras aplicar **PCA (componentes principales)**, se reducen a unas **90 variables finales** que resumen la dinámica conjunta del mercado.
+    """)
+
+    st.markdown("""
+    ### 3. Estructura de entrada para la red neuronal
+    El modelo utiliza una **ventana temporal de 5 días (lookback)** que captura dependencias a corto plazo.  
+    Se aplican dos configuraciones paralelas:
+
+    - **Single-step:** predice el valor del siguiente día.  
+    - **Multi-step:** proyecta los próximos 5 días.
+
+    Estructura de entrada:
+    ```
+    X.shape = (n_muestras, 5, 24)
+    y.shape = (n_muestras, horizonte, 2)
+    ```
+    donde las 24 variables incluyen precios normalizados, componentes PCA y factores macroeconómicos.  
+    Todo el conjunto se escala con `StandardScaler` para garantizar estabilidad en el entrenamiento.
+    """)
+
+    st.markdown("""
+    ### 4. Arquitectura del modelo LSTM
+    El núcleo del sistema es una **red neuronal recurrente (RNN)** con celdas **LSTM (Long Short-Term Memory)**, diseñadas para reconocer patrones temporales en datos financieros.
+
+    **Estructura:**
+    - LSTM (256 neuronas) — captura tendencias de largo plazo.  
+    - Dropout (30%) — reduce sobreajuste.  
+    - LSTM (128 neuronas) — sintetiza relaciones de segundo orden.  
+    - Dropout (20%) — refuerza generalización.  
+    - Capa densa (2 neuronas) — genera las predicciones de **BBVA** y **Santander**.
+
+    Entrenamiento con **Adam (lr = 0.001)** y pérdida **MSE**, monitorizando **MAE** sobre validación.  
+    Early Stopping para evita sobreentrenamiento.
+
+    ```
+    loss ≈ 0.0109   |   val_loss ≈ 0.0066
+    mae  ≈ 0.0648   |   val_mae  ≈ 0.0415
+    ```
+    """)
+
+    st.markdown("""
+    ### 5. Predicción y proyección futura
+    El modelo genera dos salidas principales:
+
+    - **Predicción validada:** comparación entre valores reales y estimados en el histórico reciente.  
+    - **Proyección futura:** cálculo autoregresivo de los próximos **5 días**, realimentando cada predicción como entrada siguiente.
+
+    Los resultados se reescalan mediante la inversa del `StandardScaler`, obteniendo precios en su escala original.
+    """)
+
+    st.markdown("""
+    ### 6. Visualización interactiva
+    El panel permite explorar:
+    - La evolución histórica de precios y predicciones.  
+    - Rangos de visualización: *Completa*, *Último año* o *Último mes*.  
+    - Comparativas entre los valores reales y los proyectados.
+
+    """)
+
+    st.markdown("""
+    ### 7. Resumen técnico
+    | Fase | Descripción | Resultado clave |
+    |------|--------------|----------------|
+    | **Ingesta** | Descarga automática desde Yahoo Finance, FRED y BCE | 306 series originales |
+    | **Limpieza y fusión** | Homogeneización diaria, integración de eventos | 44 630 registros |
+    | **Selección de variables** | Filtrado por correlación y PCA | 90 variables finales |
+    | **Ventana temporal** | Lookback = 5, Horizonte = 1 y 5 | Captura dinámicas de corto plazo |
+    | **Modelo LSTM** | 256 → 128 neuronas, Dropout 0.3/0.2 | Val MAE ≈ 0.0415 |
+    | **Predicción futura** | Proyección autoregresiva a 5 días | BBVA & Santander forecast |
+
+    **Repositorio del modelo:** [GitHub – RNN-Prediccion_acciones](https://github.com/alejandromtnz/RNN-Prediccion_acciones)
     """)
