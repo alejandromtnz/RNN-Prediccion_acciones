@@ -271,6 +271,7 @@ elif page == "Modelo predictivo":
     Se recopilan más de **300 series históricas** de diversas fuentes:
 
     - **Acciones e índices bursátiles** (Yahoo Finance): BBVA, Santander, IBEX 35, S&P 500, Euro Stoxx 50, DAX, Nasdaq, MSCI World.  
+        - Tener en cuenta que se han utilizado los precios de los dividendos reinvertidos (Close) para reflejar el rendimiento total.
     - **Commodities y divisas:** Brent, Oro, Gas Natural, Cobre, EUR/USD, DXY.  
     - **Indicadores macroeconómicos:** PIB, inflación, desempleo, tipos de interés (FRED, BCE, Eurostat).  
     - **Riesgos de mercado:** volatilidad implícita (VIX, EVZ) y sectores globales (MSCI Financials).  
