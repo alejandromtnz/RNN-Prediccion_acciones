@@ -204,27 +204,33 @@ elif page == "Perfil profesional":
             margin-bottom: 1rem;
         }
         .business-card h3 {
-            margin-top: 2rem;
+            margin-top: 1.2rem;  /* antes 2rem */
+            margin-bottom: 0.2rem;  /* reduce espacio antes de los enlaces */
             font-family: 'Cinzel', serif;
             font-size: 1.05rem;
             color: #222;
             letter-spacing: 0.5px;
         }
         .business-card a {
-            color: #b8860b;
+            color: #c7a008; /* amarillo más suave */
             text-decoration: none;
             font-weight: 500;
+            transition: color 0.3s ease;
         }
         .business-card a:hover {
+            color: #b8860b;
             text-decoration: underline;
         }
         .business-card ul {
             list-style-type: none;
             padding-left: 0;
-            margin-top: 0.5rem;
+            margin-top: 0.2rem; /* antes 0.8rem */
+            display: flex;
+            gap: 1.3rem;
+            justify-content: flex-start;
         }
         .business-card li {
-            margin-bottom: 0.3rem;
+            margin-bottom: 0;
         }
         </style>
 
@@ -237,12 +243,11 @@ elif page == "Perfil profesional":
             <ul>
                 <li><a href="https://github.com/alejandromtnz" target="_blank">GitHub</a></li>
                 <li><a href="https://www.linkedin.com/in/alejandromartinezronda/" target="_blank">LinkedIn</a></li>
-                <li><a href="mailto:amartron@myuax.com">Correo electrónico</a></li>
+                <li><a href="mailto:amartron@myuax.com">Correo</a></li>
             </ul>
             </p>
-
-            
         </div>
+
         """,
         unsafe_allow_html=True
     )
