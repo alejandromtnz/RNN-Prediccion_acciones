@@ -126,7 +126,7 @@ if page == "Proyección bursátil":
     tf.random.set_seed(SEED)
 
     # Cargar datos y modelo
-    data_path = "../data/processed/final_data.csv.gz"
+    data_path = "data/processed/final_data.csv.gz"
     data = pd.read_csv(data_path, compression='gzip', parse_dates=['Date'], index_col='Date')
     data = data.loc["2005-01-01":"2025-10-31"]
 
@@ -134,10 +134,10 @@ if page == "Proyección bursátil":
     main_cols = ['BBVA.MC_Close','SAN.MC_Close'] + pca_cols
     data_rnn = data[main_cols].ffill().bfill()
 
-    scaler = joblib.load("../results/models/scaler_lstm_256_128.pkl")
+    scaler = joblib.load("results/models/scaler_lstm_256_128.pkl")
     data_scaled = pd.DataFrame(scaler.transform(data_rnn), columns=data_rnn.columns, index=data_rnn.index)
 
-    model = load_model("../results/models/lstm_256_128_drop0.3_0.2_bs32_final.keras", compile=False)
+    model = load_model("results/models/lstm_256_128_drop0.3_0.2_bs32_final.keras", compile=False)
 
     lookback = 5
     X_seq, y_seq = create_sequences(data_scaled, lookback=lookback, horizon=1)
