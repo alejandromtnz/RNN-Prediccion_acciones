@@ -1,1 +1,22 @@
+# Entornos virtuales
 venv/
+.venv/
+env/
+
+# Cachés de Python
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Configuración local de IDE
+.vscode/
+.idea/
+
+# Pruebas
+results/models/pruebas/*
+notebooks/RNN/pruebas/*
