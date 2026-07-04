@@ -18,5 +18,5 @@ Thumbs.db
 .idea/
 
 # Pruebas
-results/models/pruebas/*
-notebooks/RNN/pruebas/*
+results/models/pruebas/
+notebooks/RNN/pruebas/
