@@ -1,76 +1,74 @@
-# Predicción de acciones con redes neuronales recurrentes (LSTM)
+# Stock Price Prediction with Recurrent Neural Networks (LSTM)
 
-Proyecto de predicción de la evolución de precios de acciones del sector bancario
-(BBVA, Santander, …) mediante redes neuronales recurrentes tipo **LSTM**. El
-modelo se entrena a partir de datos de mercado enriquecidos con variables
-macroeconómicas, divisas, materias primas, riesgo de mercado, eventos históricos
-y sentimiento de noticias. Incluye una aplicación **Streamlit** interactiva para
-explorar las predicciones.
+Deep learning project that forecasts the price evolution of banking-sector stocks
+(BBVA, Santander, …) using **LSTM** recurrent neural networks. The model is
+trained on market data enriched with macroeconomic indicators, foreign exchange,
+commodities, market-risk measures, historical events and news sentiment. It ships
+with an interactive **Streamlit** app to explore the predictions.
 
-> Proyecto desarrollado como Trabajo de Fin de Grado / práctica de aprendizaje
-> automático. El objetivo es didáctico y de investigación; **no constituye una
-> recomendación de inversión**.
+> Built as a final-degree / machine-learning project. Its purpose is educational
+> and research-oriented — **it is not investment advice**.
 
 ## Demo
 
-La aplicación Streamlit permite seleccionar un activo, lanzar el modelo entrenado
-y visualizar la serie histórica junto con la predicción a varios días.
+The Streamlit app lets you pick an asset, run the trained model and visualise the
+historical series together with a multi-day forecast.
 
 ```bash
 streamlit run streamlit/app.py
 ```
 
-## Estructura del repositorio
+## Repository structure
 
 ```
 .
 ├── data/
-│   ├── raw/                 # Datos originales por categoría (sin procesar)
-│   │   ├── stock_data/          # Cotizaciones (BBVA, Santander, índices…)
-│   │   ├── commodity_data/      # Materias primas (Brent, Oro, Cobre…)
-│   │   ├── fx_data/             # Tipos de cambio (EURUSD, DXY…)
-│   │   ├── macro_data/          # Macro (CPI, GDP, paro, M2/M3…)
-│   │   ├── market_risk/         # Riesgo de mercado (VIX, EVZ…)
-│   │   ├── events_data/         # Eventos históricos con impacto
-│   │   └── news_data/           # Sentimiento de noticias
-│   └── processed/           # Datos limpios, unificados y features finales
-├── src/                     # Scripts de descarga/ingesta de datos por fases
-│   ├── fase 2/                  # Loaders de mercado, commodities/FX y macro
-│   ├── fase 3/                  # Loader de eventos
-│   └── fase 4/                  # Loader GDELT (noticias)
+│   ├── raw/                 # Original per-category data (unprocessed)
+│   │   ├── stock_data/          # Quotes (BBVA, Santander, indices…)
+│   │   ├── commodity_data/      # Commodities (Brent, Gold, Copper…)
+│   │   ├── fx_data/             # Exchange rates (EURUSD, DXY…)
+│   │   ├── macro_data/          # Macro (CPI, GDP, unemployment, M2/M3…)
+│   │   ├── market_risk/         # Market risk (VIX, EVZ…)
+│   │   ├── events_data/         # Historical high-impact events
+│   │   └── news_data/           # News sentiment
+│   └── processed/           # Clean, merged data and final feature set
+├── src/                     # Data download / ingestion scripts, by phase
+│   ├── fase 2/                  # Market, commodities/FX and macro loaders
+│   ├── fase 3/                  # Events loader
+│   └── fase 4/                  # GDELT (news) loader
 ├── notebooks/
-│   ├── fases-info.ipynb         # Índice / descripción de las fases del pipeline
-│   ├── data_clean/              # Limpieza y unificación de datos (fase 5)
-│   └── RNN/                     # Modelado y predicción
-│       ├── 1-modelo.ipynb           # Entrenamiento del LSTM
-│       ├── 2-predicciones.ipynb     # Generación de predicciones
-│       └── pruebas/                 # Notebooks experimentales (borradores)
+│   ├── fases-info.ipynb         # Index / description of the pipeline phases
+│   ├── data_clean/              # Data cleaning and merging (phase 5)
+│   └── RNN/                     # Modelling and prediction
+│       ├── 1-modelo.ipynb           # LSTM training
+│       ├── 2-predicciones.ipynb     # Prediction generation
+│       └── pruebas/                 # Experimental notebooks (drafts)
 ├── results/
-│   └── models/              # Modelos LSTM entrenados (.keras) y scalers (.pkl)
-├── streamlit/               # Aplicación web (autocontenida para despliegue)
+│   └── models/              # Trained LSTM models (.keras) and scalers (.pkl)
+├── streamlit/               # Web application (self-contained for deployment)
 │   ├── app.py
-│   ├── utils/                   # Carga de datos, preprocesado y gráficas
-│   ├── data/ · results/         # Copia de los datos/modelos que usa la app
+│   ├── utils/                   # Data loading, preprocessing and plotting
+│   ├── data/ · results/         # Copy of the data/models used by the app
 │   └── requirements_streamlit.txt
 ├── requirements.txt
-└── .devcontainer/           # Configuración de GitHub Codespaces
+└── .devcontainer/           # GitHub Codespaces configuration
 ```
 
-## Fases del pipeline
+## Pipeline phases
 
-1. **Ingesta de datos** (`src/`): descarga de cotizaciones (yfinance), materias
-   primas, divisas, indicadores macroeconómicos, eventos y noticias.
-2. **Limpieza y unificación** (`notebooks/data_clean/`): fusión de todas las
-   fuentes en un único dataset alineado por fecha y selección de variables.
-3. **Modelado** (`notebooks/RNN/1-modelo.ipynb`): construcción y entrenamiento
-   del LSTM (arquitectura 256→128 con dropout, ventana temebral configurable).
-4. **Predicción** (`notebooks/RNN/2-predicciones.ipynb`): predicción a varios
-   días sobre datos recientes.
-5. **Visualización** (`streamlit/app.py`): interfaz interactiva.
+1. **Data ingestion** (`src/`): download of quotes (yfinance), commodities, FX,
+   macroeconomic indicators, events and news.
+2. **Cleaning and merging** (`notebooks/data_clean/`): all sources merged into a
+   single date-aligned dataset and feature selection.
+3. **Modelling** (`notebooks/RNN/1-modelo.ipynb`): building and training the LSTM
+   (256→128 architecture with dropout, configurable lookback window).
+4. **Prediction** (`notebooks/RNN/2-predicciones.ipynb`): multi-day forecast on
+   recent data.
+5. **Visualisation** (`streamlit/app.py`): interactive interface.
 
-## Requisitos e instalación
+## Requirements & installation
 
-Requiere **Python 3.11**.
+Requires **Python 3.11**.
 
 ```bash
 python -m venv .venv
@@ -78,36 +76,42 @@ source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-Para ejecutar únicamente la app Streamlit basta con un entorno más ligero:
+To run only the Streamlit app, a lighter environment is enough:
 
 ```bash
 pip install -r streamlit/requirements_streamlit.txt
 ```
 
-## Uso
+## Usage
 
-**Reproducir el entrenamiento**
+**Reproduce training**
 
 ```bash
-jupyter lab            # abrir notebooks/RNN/1-modelo.ipynb
+jupyter lab            # open notebooks/RNN/1-modelo.ipynb
 ```
 
-**Lanzar la aplicación**
+**Launch the app**
 
 ```bash
 streamlit run streamlit/app.py
 ```
 
-También puede abrirse directamente en **GitHub Codespaces**: el `.devcontainer`
-arranca la app automáticamente en el puerto 8501.
+It can also be opened directly in **GitHub Codespaces**: the `.devcontainer`
+starts the app automatically on port 8501.
 
-## Datos y modelo
+## Data & model
 
-- Datos comprimidos en `.csv.gz` dentro de `data/`.
-- Modelo principal: `results/models/lstm_256_128_drop0.3_0.2_bs32_final.keras`
-  con su scaler `results/models/scaler_lstm_256_128.pkl`.
+- Data compressed as `.csv.gz` under `data/`.
+- Main model: `results/models/lstm_256_128_drop0.3_0.2_bs32_final.keras`
+  with its scaler `results/models/scaler_lstm_256_128.pkl`.
 
-## Aviso
+## Disclaimer
 
-Contenido con fines educativos y de investigación. Las predicciones no deben
-utilizarse para tomar decisiones de inversión reales.
+Educational and research content only. The predictions must not be used to make
+real investment decisions.
+
+---
+
+> **Nota:** el código, los notebooks y los datos están en español. Este README
+> está en inglés para mayor alcance; la estructura de carpetas conserva sus
+> nombres originales.
